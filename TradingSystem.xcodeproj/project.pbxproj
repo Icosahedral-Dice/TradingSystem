@@ -32,11 +32,12 @@
 		CA0020CA293F03D00002DE32 /* riskservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = riskservice.hpp; sourceTree = "<group>"; };
 		CA0020CB293F03D00002DE32 /* inquiryservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = inquiryservice.hpp; sourceTree = "<group>"; };
 		CA0020CC293F03D00002DE32 /* positionservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = positionservice.hpp; sourceTree = "<group>"; };
-		CA0020CD293F03D00002DE32 /* soa.hpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = soa.hpp; sourceTree = "<group>"; tabWidth = 2; };
+		CA0020CD293F03D00002DE32 /* soa.hpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.cpp.h; path = soa.hpp; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 		CA0020CE293F03D00002DE32 /* pricingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pricingservice.hpp; sourceTree = "<group>"; };
 		CA0020CF293F03D00002DE32 /* tradebookingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tradebookingservice.hpp; sourceTree = "<group>"; };
 		CA0020D0293F03D00002DE32 /* marketdataservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = marketdataservice.hpp; sourceTree = "<group>"; };
-		CA012056293FD71600C517B0 /* Utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		CA82A46529456C3B006339D1 /* initialization.hpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = initialization.hpp; sourceTree = "<group>"; };
+		CA82A46E2945A10E006339D1 /* utilities.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utilities.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,19 +70,20 @@
 		CA0020BE293F03A90002DE32 /* TradingSystem */ = {
 			isa = PBXGroup;
 			children = (
-				CA0020BF293F03A90002DE32 /* main.cpp */,
+				CA82A46529456C3B006339D1 /* initialization.hpp */,
 				CA0020CD293F03D00002DE32 /* soa.hpp */,
 				CA0020C6293F03D00002DE32 /* products.hpp */,
+				CA0020BF293F03A90002DE32 /* main.cpp */,
+				CA0020D0293F03D00002DE32 /* marketdataservice.hpp */,
 				CA0020C8293F03D00002DE32 /* executionservice.hpp */,
 				CA0020C9293F03D00002DE32 /* historicaldataservice.hpp */,
 				CA0020CB293F03D00002DE32 /* inquiryservice.hpp */,
-				CA0020D0293F03D00002DE32 /* marketdataservice.hpp */,
 				CA0020CC293F03D00002DE32 /* positionservice.hpp */,
 				CA0020CE293F03D00002DE32 /* pricingservice.hpp */,
 				CA0020CA293F03D00002DE32 /* riskservice.hpp */,
 				CA0020C7293F03D00002DE32 /* streamingservice.hpp */,
 				CA0020CF293F03D00002DE32 /* tradebookingservice.hpp */,
-				CA012056293FD71600C517B0 /* Utility.h */,
+				CA82A46E2945A10E006339D1 /* utilities.hpp */,
 			);
 			path = TradingSystem;
 			sourceTree = "<group>";
