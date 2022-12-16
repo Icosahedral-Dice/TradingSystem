@@ -113,7 +113,7 @@ void GenerateAllBondPrices () {
     
     // Number of prices per bond
     unsigned number_of_prices = 1000000;
-    for (const auto& [year, bond] : kBondMap) {
+    for (const auto& [year, bond] : kBondMapMaturity) {
         cout << "Generating prices for " << bond.first << "... ";
         GeneratePrice(bond.first, number_of_prices, file);
         cout << "Success!" << endl;

@@ -2,7 +2,12 @@
  * soa.hpp
  * Definition of our Service Oriented Architecture (SOA) Service base class
  *
- * @author Breman Thuraisingham
+ * @author Breman Thuraisingham, Mingsen Wang
+ */
+
+/*
+ Design modification:
+ 1) Added the vector of listener as a data member of Service. Related methods are also implemented (though still abstract).
  */
 
 #ifndef SOA_HPP
@@ -42,6 +47,8 @@ public:
 template<typename K, typename V>
 class Service
 {
+protected:
+    vector<ServiceListener<V>*> listeners_;
 
 public:
 
@@ -81,5 +88,15 @@ public:
     virtual void Subscribe(ifstream& data) = 0;
 
 };
+
+template<typename K, typename V>
+void Service<K, V>::AddListener(ServiceListener<V> *listener) {
+    listeners_.push_back(listener);
+}
+
+template<typename K, typename V>
+const vector< ServiceListener<V>* >& Service<K, V>::GetListeners() const {
+    return listeners_;
+}
 
 #endif

@@ -74,7 +74,7 @@ string ConvertPrice(float f_price) {
 
 
 
-const map<int, pair<string, date>> kBondMap({
+map<int, pair<string, date>> kBondMapMaturity({
     {2, {"91282CFX4", {2024, Nov, 30}}},
     {3, {"91282CFW6", {2025, Nov, 15}}},
     {5, {"91282CFZ9", {2027, Nov, 30}}},
@@ -84,15 +84,29 @@ const map<int, pair<string, date>> kBondMap({
     {30, {"912810TL2", {2052, Nov, 15}}}
 });
 
+map<string, pair<int, date>> kBondMapCusip({
+    {"91282CFX4", {2, {2024, Nov, 30}}},
+    {"91282CFW6", {3, {2025, Nov, 15}}},
+    {"91282CFZ9", {5, {2027, Nov, 30}}},
+    {"91282CFY2", {7, {2029, Nov, 30}}},
+    {"91282CFV8", {10, {2032, Nov, 15}}},
+    {"912810TM0", {20, {2042, Nov, 30}}},
+    {"912810TL2", {30, {2052, Nov, 15}}}
+});
+
 // Fetch cusip object from maturity (years)
 // 2Y, 3Y, 5Y, 7Y, 10Y, 20Y, and 30Y
 // Issue date: 2022/11/30
 string FetchCusip(int maturity) {
-    return kBondMap.at(maturity).first;
+    return kBondMapMaturity[maturity].first;
 }
 
 Bond FetchBond(int maturity) {
-    return Bond(kBondMap.at(maturity).first, CUSIP, "US" + to_string(maturity) + "Y", 0., kBondMap.at(maturity).second);
+    return Bond(kBondMapMaturity[maturity].first, CUSIP, "US" + to_string(maturity) + "Y", 0., kBondMapMaturity[maturity].second);
+}
+
+Bond FetchBond(const string& cusip) {
+    return Bond(cusip, CUSIP, "US" + to_string(kBondMapCusip[cusip].first) + "Y", 0., kBondMapCusip[cusip].second);
 }
 
 string GetTimestamp() {

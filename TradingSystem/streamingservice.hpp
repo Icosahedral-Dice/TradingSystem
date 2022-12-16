@@ -8,7 +8,7 @@
 #define STREAMING_SERVICE_HPP
 
 #include "soa.hpp"
-#include "marketdataservice.hpp"
+#include "market_data_service.hpp"
 
 /**
  * A price stream order with price and quantity (visible and hidden)
