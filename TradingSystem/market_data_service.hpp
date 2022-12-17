@@ -132,7 +132,7 @@ class MarketDataService : public Service<string,OrderBook <T> >
 private:
     
     unordered_map<string, OrderBook<T>> order_books_;
-    MarketDataConnector<T>* connector_;
+    MarketDataConnector<T>* in_connector;
     int book_depth_;
     
 public:
@@ -140,7 +140,7 @@ public:
     MarketDataService();
     ~MarketDataService();
     
-    // SERVICE CLASS OVERRIDE BELOW
+    // MARK: SERVICE CLASS OVERRIDE BELOW
     // Get data on our service given a key (orderbook)
     virtual OrderBook<T>& GetData(string product_id) override;
     
@@ -153,7 +153,7 @@ public:
     
     // Get all listeners on the Service.
     virtual const vector<ServiceListener<OrderBook<T>>*>& GetListeners() const override;
-    // SERVICE CLASS OVERRIDE ABOVE
+    // MARK: SERVICE CLASS OVERRIDE ABOVE
     
     // Get the MarketDataConnector
     MarketDataConnector<T>* GetConnector();
@@ -281,11 +281,11 @@ const BidOffer OrderBook<T>::GetBidOffer() const {
 }
 
 template<typename T>
-MarketDataService<T>::MarketDataService() : order_books_(), connector_(new MarketDataConnector<T>(this)), book_depth_(10) {}
+MarketDataService<T>::MarketDataService() : order_books_(), in_connector(new MarketDataConnector<T>(this)), book_depth_(10) {}
 
 template<typename T>
 MarketDataService<T>::~MarketDataService() {
-    delete connector_;
+    delete in_connector;
 }
 
 template<typename T>
@@ -318,7 +318,7 @@ const vector<ServiceListener<OrderBook<T>>*>& MarketDataService<T>::GetListeners
 // Get the MarketDataConnector
 template<typename T>
 MarketDataConnector<T>* MarketDataService<T>::GetConnector() {
-    return connector_;
+    return in_connector;
 }
 
 // Get the book depth
@@ -394,7 +394,7 @@ void MarketDataConnector<T>::Publish(OrderBook<T> &data) {
 
 template <typename T>
 void MarketDataConnector<T>::Subscribe(ifstream &data) {
-    // TODO: THIS
+    
     int book_depth = service_->GetBookDepth();
     int read_lines = book_depth << 1;
     

@@ -14,6 +14,7 @@
 
 #include "algo_execution_service.hpp"
 #include "execution_service.hpp"
+#include "trade_booking_service.hpp"
 
 using namespace std;
 

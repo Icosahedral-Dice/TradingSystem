@@ -49,7 +49,7 @@ public:
     AlgoExecutionService();
     ~AlgoExecutionService();
     
-    // SERVICE CLASS OVERRIDE BELOW
+    // MARK: SERVICE CLASS OVERRIDE BELOW
     // Get data on our service given a key (orderbook)
     virtual AlgoExecutionOrder<T>& GetData(string product_id) override;
     
@@ -62,7 +62,9 @@ public:
     
     // Get all listeners on the Service.
     virtual const vector<ServiceListener<AlgoExecutionOrder<T>>*>& GetListeners() const override;
-    // SERVICE CLASS OVERRIDE ABOVE
+    // MARK: SERVICE CLASS OVERRIDE ABOVE
+    
+    MarketDataToAlgoExecutionListener<T>* GetInListener();
     
     // Execute an order on a market
     void AlgoExecute(OrderBook<T>& order_book, Market market = BROKERTEC);
@@ -77,7 +79,7 @@ public:
     MarketDataToAlgoExecutionListener(OrderBook<T>* service);
     ~MarketDataToAlgoExecutionListener() = default;
     
-    // SERVICELISTENER CLASS OVERRIDE BELOW
+    // MARK: SERVICELISTENER CLASS OVERRIDE BELOW
     // Listener callback to process an add event to the Service
     virtual void ProcessAdd(OrderBook<T> &data) override;
 
@@ -86,7 +88,7 @@ public:
 
     // Listener callback to process an update event to the Service
     virtual void ProcessUpdate(OrderBook<T> &data) override;
-    // SERVICELISTENER CLASS OVERRIDE ABOVE
+    // MARK: SERVICELISTENER CLASS OVERRIDE ABOVE
 };
 
 template <typename T>
@@ -147,6 +149,11 @@ void AlgoExecutionService<T>::AddListener(ServiceListener<AlgoExecutionOrder<T>>
 template <typename T>
 const vector<ServiceListener<AlgoExecutionOrder<T>>*>& AlgoExecutionService<T>::GetListeners() const {
     return this->Service<string, AlgoExecutionOrder<T>>::GetListeners();
+}
+
+template <typename T>
+MarketDataToAlgoExecutionListener<T>* AlgoExecutionService<T>::GetInListener() {
+    return in_listener_;
 }
 
 template <typename T>

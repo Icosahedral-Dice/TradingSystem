@@ -34,7 +34,7 @@
 		CA0020CC293F03D00002DE32 /* positionservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = positionservice.hpp; sourceTree = "<group>"; };
 		CA0020CD293F03D00002DE32 /* soa.hpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.cpp.h; path = soa.hpp; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 		CA0020CE293F03D00002DE32 /* pricingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pricingservice.hpp; sourceTree = "<group>"; };
-		CA0020CF293F03D00002DE32 /* tradebookingservice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tradebookingservice.hpp; sourceTree = "<group>"; };
+		CA0020CF293F03D00002DE32 /* trade_booking_service.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = trade_booking_service.hpp; sourceTree = "<group>"; };
 		CA0020D0293F03D00002DE32 /* market_data_service.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = market_data_service.hpp; sourceTree = "<group>"; };
 		CA16915C2946667200EBB494 /* bond_services.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = bond_services.hpp; sourceTree = "<group>"; };
 		CA24B4E3294AC420001B9FBB /* algo_execution_service.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = algo_execution_service.hpp; sourceTree = "<group>"; };
@@ -82,10 +82,10 @@
 				CA8EF8F7294CF60E007F6AAA /* execution_order.hpp */,
 				CA24B4E3294AC420001B9FBB /* algo_execution_service.hpp */,
 				CA0020C8293F03D00002DE32 /* execution_service.hpp */,
-				CA0020CF293F03D00002DE32 /* tradebookingservice.hpp */,
+				CA0020CF293F03D00002DE32 /* trade_booking_service.hpp */,
+				CA0020CC293F03D00002DE32 /* positionservice.hpp */,
 				CA0020C9293F03D00002DE32 /* historicaldataservice.hpp */,
 				CA0020CB293F03D00002DE32 /* inquiryservice.hpp */,
-				CA0020CC293F03D00002DE32 /* positionservice.hpp */,
 				CA0020CE293F03D00002DE32 /* pricingservice.hpp */,
 				CA0020CA293F03D00002DE32 /* riskservice.hpp */,
 				CA0020C7293F03D00002DE32 /* streamingservice.hpp */,
@@ -121,7 +121,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					CA0020BB293F03A90002DE32 = {
 						CreatedOnToolsVersion = 14.1;
@@ -191,6 +191,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -249,6 +250,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -270,7 +272,9 @@
 		CA0020C4293F03A90002DE32 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = KUY84ZT6AH;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /usr/local/boost_1_80_0;
@@ -282,7 +286,9 @@
 		CA0020C5293F03A90002DE32 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = KUY84ZT6AH;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = /usr/local/boost_1_80_0;
