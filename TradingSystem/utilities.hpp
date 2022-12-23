@@ -133,4 +133,9 @@ string GetTimestamp() {
     return second_string + '.' + millisec_string;
 }
 
+double GetPV01Value(const string& cusip) {
+    // TODO: Implement this
+    return 0.;
+}
+
 #endif /* utilities_hpp */

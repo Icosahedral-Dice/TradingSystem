@@ -8,6 +8,8 @@
 #include <iostream>
 #include <iomanip>
 //#include "initialization.hpp"
+#include "soa.hpp"
+#include "products.hpp"
 #include "market_data_service.hpp"
 #include "bond_services.hpp"
 #include "utilities.hpp"
@@ -15,6 +17,11 @@
 #include "algo_execution_service.hpp"
 #include "execution_service.hpp"
 #include "trade_booking_service.hpp"
+#include "position_service.hpp"
+#include "risk_service.hpp"
+#include "pricing_service.hpp"
+
+#include "price_stream.hpp"
 
 using namespace std;
 

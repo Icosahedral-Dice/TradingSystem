@@ -8,7 +8,7 @@
 #define INQUIRY_SERVICE_HPP
 
 #include "soa.hpp"
-#include "tradebookingservice.hpp"
+#include "trade_booking_service.hpp"
 
 // Various inqyury states
 enum InquiryState { RECEIVED, QUOTED, DONE, REJECTED, CUSTOMER_REJECTED };

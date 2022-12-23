@@ -2,12 +2,13 @@
  * soa.hpp
  * Definition of our Service Oriented Architecture (SOA) Service base class
  *
- * @author Breman Thuraisingham, Mingsen Wang
+ * @authors Breman Thuraisingham, Mingsen Wang
  */
 
 /*
  Design modification:
  1) Added the vector of listener as a data member of Service. Related methods are also implemented (though still abstract).
+ 2) Virtualized the destructor of all base classes
  */
 
 #ifndef SOA_HPP
@@ -28,6 +29,7 @@ class ServiceListener
 {
 
 public:
+    virtual ~ServiceListener() = default;
 
     // Listener callback to process an add event to the Service
     virtual void ProcessAdd(V &data) = 0;
@@ -51,6 +53,7 @@ protected:
     vector<ServiceListener<V>*> listeners_;
 
 public:
+    virtual ~Service() = default;
 
     // Get data on our service given a key
     virtual V& GetData(K key) = 0;
@@ -80,6 +83,7 @@ class Connector
 {
 
 public:
+    virtual ~Connector() = default;
 
     // Publish data to the Connector
     virtual void Publish(V &data) = 0;

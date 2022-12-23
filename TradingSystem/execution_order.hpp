@@ -2,7 +2,7 @@
  * execution order.hpp
  * Defines an execution order for AlgoExecutionService and ExecutionService
  *
- * @author Breman Thuraisingham, Mingsen Wang
+ * @authors Breman Thuraisingham, Mingsen Wang
  */
 
 #ifndef execution_order_hpp

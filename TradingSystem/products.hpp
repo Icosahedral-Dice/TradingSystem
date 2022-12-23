@@ -2,8 +2,14 @@
  * products.hpp
  * Defines Bond and Interest Rate Swap products.
  *
- * @author Breman Thuraisingham
+ * @authors Breman Thuraisingham, Mingsen Wang
  */
+
+/*
+ Design modification:
+ 1) Virtualized the destructor of all base classes
+ */
+
 #ifndef PRODUCTS_HPP
 #define PRODUCTS_HPP
 
@@ -24,6 +30,7 @@ class Product
 {
 
 public:
+    virtual ~Product() = default;
 
     // ctor for a prduct
     Product(string _productId, ProductType _productType);

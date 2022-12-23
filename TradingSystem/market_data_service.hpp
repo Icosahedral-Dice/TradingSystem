@@ -88,7 +88,7 @@ private:
  * Order book with a bid and offer stack.
  * Type T is the product type.
  */
-template<typename T>
+template <typename T>
 class OrderBook
 {
 
@@ -126,13 +126,13 @@ class MarketDataConnector;
  * Keyed on product identifier.
  * Type T is the product type.
  */
-template<typename T>
+template <typename T>
 class MarketDataService : public Service<string,OrderBook <T> >
 {
 private:
     
     unordered_map<string, OrderBook<T>> order_books_;
-    MarketDataConnector<T>* in_connector;
+    MarketDataConnector<T>* in_connector_;
     int book_depth_;
     
 public:
@@ -228,34 +228,34 @@ const Order& BidOffer::GetOfferOrder() const
     return offerOrder;
 }
 
-template<typename T>
+template <typename T>
 OrderBook<T>::OrderBook(const T &_product, const vector<Order> &_bidStack, const vector<Order> &_offerStack) :
   product(_product), bidStack(_bidStack), offerStack(_offerStack)
 {
 }
 
-template<typename T>
+template <typename T>
 OrderBook<T>::OrderBook(const T &_product, vector<Order>&& _bidStack, vector<Order>&& _offerStack) : product(_product), bidStack(_bidStack), offerStack(_offerStack) {}
 
-template<typename T>
+template <typename T>
 const T& OrderBook<T>::GetProduct() const
 {
     return product;
 }
 
-template<typename T>
+template <typename T>
 const vector<Order>& OrderBook<T>::GetBidStack() const
 {
     return bidStack;
 }
 
-template<typename T>
+template <typename T>
 const vector<Order>& OrderBook<T>::GetOfferStack() const
 {
     return offerStack;
 }
 
-template<typename T>
+template <typename T>
 const BidOffer OrderBook<T>::GetBidOffer() const {
     // Get highest bid order
     const Order* highest_bid_order(&bidStack[0]);
@@ -280,20 +280,20 @@ const BidOffer OrderBook<T>::GetBidOffer() const {
     return BidOffer(*highest_bid_order, *lowest_offer_order);
 }
 
-template<typename T>
-MarketDataService<T>::MarketDataService() : order_books_(), in_connector(new MarketDataConnector<T>(this)), book_depth_(10) {}
+template <typename T>
+MarketDataService<T>::MarketDataService() : order_books_(), in_connector_(new MarketDataConnector<T>(this)), book_depth_(10) {}
 
-template<typename T>
+template <typename T>
 MarketDataService<T>::~MarketDataService() {
-    delete in_connector;
+    delete in_connector_;
 }
 
-template<typename T>
+template <typename T>
 OrderBook<T>& MarketDataService<T>::GetData(string product_id) {
     return order_books_.at(product_id);
 }
 
-template<typename T>
+template <typename T>
 void MarketDataService<T>::OnMessage(OrderBook<T>& book) {
     string product_id = book.GetProduct().GetProductId();
     
@@ -305,24 +305,24 @@ void MarketDataService<T>::OnMessage(OrderBook<T>& book) {
     }
 }
 
-template<typename T>
+template <typename T>
 void MarketDataService<T>::AddListener(ServiceListener<OrderBook<T>>* listener) {
     this->Service<string, OrderBook<T>>::AddListener(listener);
 }
 
-template<typename T>
+template <typename T>
 const vector<ServiceListener<OrderBook<T>>*>& MarketDataService<T>::GetListeners() const {
     return this->Service<string, OrderBook<T>>::GetListeners();
 }
 
 // Get the MarketDataConnector
-template<typename T>
+template <typename T>
 MarketDataConnector<T>* MarketDataService<T>::GetConnector() {
-    return in_connector;
+    return in_connector_;
 }
 
 // Get the book depth
-template<typename T>
+template <typename T>
 int MarketDataService<T>::GetBookDepth() const {
     return book_depth_;
 }

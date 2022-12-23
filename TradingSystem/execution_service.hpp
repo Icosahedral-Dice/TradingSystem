@@ -2,7 +2,7 @@
  * execution service.hpp
  * Defines the data types and Service for executions.
  *
- * @author Breman Thuraisingham, Mingsen Wang
+ * @authors Breman Thuraisingham, Mingsen Wang
  */
 
 

@@ -1,14 +1,15 @@
 /**
- * tradebookingservice.hpp
+ * trade booking service.hpp
  * Defines the data types and Service for trade booking.
  *
- * @author Breman Thuraisingham
+ * @authors Breman Thuraisingham, Mingsen Wang
  */
 #ifndef TRADE_BOOKING_SERVICE_HPP
 #define TRADE_BOOKING_SERVICE_HPP
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "soa.hpp"
 #include "execution_service.hpp"
 
