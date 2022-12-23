@@ -14,14 +14,10 @@
 #include "bond_services.hpp"
 #include "utilities.hpp"
 
-#include "algo_execution_service.hpp"
-#include "execution_service.hpp"
-#include "trade_booking_service.hpp"
-#include "position_service.hpp"
-#include "risk_service.hpp"
-#include "pricing_service.hpp"
-
-#include "price_stream.hpp"
+#include "algo_streaming_service.hpp"
+#include "streaming_service.hpp"
+#include "historical_data_service.hpp"
+#include "inquiry_service.hpp"
 
 using namespace std;
 
