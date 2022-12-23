@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include "soa.hpp"
 #include "trade_booking_service.hpp"
+#include <vector>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ class Position
 
 public:
 
+    Position() = default;
     // ctor for a position
     Position(const T &_product);
 
@@ -40,6 +42,8 @@ public:
     // Add position to designated book
     void AddPosition(string& book, long position, Side side);
 
+    vector<string> ToString() const;
+    
 private:
     T product;
     map<string, long> positions;
@@ -151,15 +155,25 @@ long Position<T>::GetAggregatePosition() {
 }
 
 template <typename T>
+PositionService<T>::PositionService() {
+    in_listener_ = new TradeBookingToPositionListener<T>(this);
+}
+
+template <typename T>
+PositionService<T>::~PositionService() {
+    delete in_listener_;
+}
+
+template <typename T>
 Position<T>& PositionService<T>::GetData(string product_id) {
     return positions_[product_id];
 }
 
 template <typename T>
 void PositionService<T>::OnMessage(Position<T>& data) {
-    string trade_id = data.GetProduct().GetTradeId();
+    string product_id = data.GetProduct().GetProductId();
     
-    positions_[trade_id] = data;
+    positions_[product_id] = data;
     
 //    // Also notify listeners
 //    for (auto& listener : Service<string, Trade<T>>::listeners_) {
@@ -193,6 +207,7 @@ void PositionService<T>::AddTrade(const Trade<T> &trade) {
     long quantity = trade.GetQuantity();
     Side side = trade.GetSide();
     
+    positions_.try_emplace(product_id, product);
     positions_[product_id].AddPosition(book, quantity, side);
     
     // Notify listeners
@@ -215,6 +230,26 @@ void TradeBookingToPositionListener<T>::ProcessRemove(Trade<T>& data) {}
 
 template<typename T>
 void TradeBookingToPositionListener<T>::ProcessUpdate(Trade<T>& data) {}
+
+template<typename T>
+vector<string> Position<T>::ToString() const
+{
+    string _product = product.GetProductId();
+    vector<string> _positions;
+    for (auto& p : positions)
+    {
+        string _book = p.first;
+        string _position = to_string(p.second);
+        _positions.push_back(_book);
+        _positions.push_back(_position);
+    }
+
+    vector<string> _strings;
+    _strings.push_back(_product);
+    _strings.insert(_strings.end(), _positions.begin(), _positions.end());
+    return _strings;
+}
+
 
 
 #endif

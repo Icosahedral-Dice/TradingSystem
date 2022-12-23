@@ -24,6 +24,7 @@ class Inquiry
 
 public:
 
+    Inquiry() = default;
     // ctor for an inquiry
     Inquiry(string _inquiryId, const T &_product, Side _side, long _quantity, double _price, InquiryState _state);
 
@@ -44,6 +45,10 @@ public:
 
     // Get the current state on the inquiry
     InquiryState GetState() const;
+    
+    void SetState(InquiryState new_state);
+    
+    vector<string> ToString() const;
 
 private:
     string inquiryId;
@@ -96,10 +101,10 @@ public:
     InquiryConnector<T>* GetConnector();
 
     // Send a quote back to the client
-    void SendQuote(const string &inquiryId, double price) = 0;
+    void SendQuote(const string &inquiryId, double price);
 
     // Reject an inquiry from the client
-    void RejectInquiry(const string &inquiryId) = 0;
+    void RejectInquiry(const string &inquiryId);
 
 };
 
@@ -170,6 +175,12 @@ InquiryState Inquiry<T>::GetState() const
 }
 
 template<typename T>
+void Inquiry<T>::SetState(InquiryState new_state)
+{
+    state = new_state;
+}
+
+template<typename T>
 InquiryService<T>::InquiryService() {
     connector_ = new InquiryConnector<T>(this);
 }
@@ -189,14 +200,15 @@ template<typename T>
 void InquiryService<T>::OnMessage(Inquiry<T>& data)
 {
     InquiryState state = data.GetState();
+    string inquiry_id = data.GetInquiryId();
     switch (state) {
         case RECEIVED:
-            inquiries_[data.GetInquiryId()] = data;
+            inquiries_.insert_or_assign(inquiry_id, data);
             connector_->Publish(data);
             break;
         case QUOTED:
             data.SetState(DONE);
-            inquiries_[data.GetInquiryId()] = data;
+            inquiries_.insert_or_assign(inquiry_id, data);
 
             for (auto& listener : this->GetListeners())
             {
@@ -230,7 +242,7 @@ template<typename T>
 void InquiryService<T>::SendQuote(const string& inquiryId, double price)
 {
     Inquiry<T>& inquiry = inquiries_[inquiryId];
-    InquiryState state = inquiry.GetState();
+//    InquiryState state = inquiry.GetState();
     inquiry.SetPrice(price);
     for (auto& listener : this->GetListeners())
     {
@@ -295,6 +307,53 @@ template<typename T>
 void InquiryConnector<T>::Subscribe(Inquiry<T>& data)
 {
     service_->OnMessage(data);
+}
+
+template<typename T>
+vector<string> Inquiry<T>::ToString() const
+{
+    string _inquiryId = inquiryId;
+    string _product = product.GetProductId();
+    string _side;
+    switch (side)
+    {
+    case BUY:
+        _side = "BUY";
+        break;
+    case SELL:
+        _side = "SELL";
+        break;
+    }
+    string _quantity = to_string(quantity);
+    string _price = ConvertPrice(price);
+    string _state;
+    switch (state)
+    {
+    case RECEIVED:
+        _state = "RECEIVED";
+        break;
+    case QUOTED:
+        _state = "QUOTED";
+        break;
+    case DONE:
+        _state = "DONE";
+        break;
+    case REJECTED:
+        _state = "REJECTED";
+        break;
+    case CUSTOMER_REJECTED:
+        _state = "CUSTOMER_REJECTED";
+        break;
+    }
+
+    vector<string> _strings;
+    _strings.push_back(_inquiryId);
+    _strings.push_back(_product);
+    _strings.push_back(_side);
+    _strings.push_back(_quantity);
+    _strings.push_back(_price);
+    _strings.push_back(_state);
+    return _strings;
 }
 
 #endif

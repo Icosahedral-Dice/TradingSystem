@@ -26,6 +26,7 @@ class Trade
 
 public:
 
+    Trade() = default;
     // ctor for a trade
     Trade(const T &_product, string _tradeId, double _price, string _book, long _quantity, Side _side);
 
@@ -97,8 +98,10 @@ public:
     
     ExecutionToTradeBookingListener<T>* GetInListener();
     
+    TradeBookingConnector<T>* GetConnector();
+    
     // Book the trade
-    void BookTrade(const Trade<T> &trade);
+    void BookTrade(Trade<T> &trade);
 };
 
 template<typename T>
@@ -214,7 +217,8 @@ template <typename T>
 void TradeBookingService<T>::OnMessage(Trade<T>& data) {
     string trade_id = data.GetTradeId();
     
-    trades_[trade_id] = data;
+    trades_.insert_or_assign(trade_id, data);
+//    trades_[trade_id] = data;
     
     // Also notify listeners
     for (auto& listener : Service<string, Trade<T>>::listeners_) {
@@ -238,7 +242,12 @@ ExecutionToTradeBookingListener<T>* TradeBookingService<T>::GetInListener() {
 }
 
 template <typename T>
-void TradeBookingService<T>::BookTrade(const Trade<T> &trade) {
+TradeBookingConnector<T>* TradeBookingService<T>::GetConnector() {
+    return out_connector_;
+}
+
+template <typename T>
+void TradeBookingService<T>::BookTrade(Trade<T> &trade) {
     for (auto& listener : Service<string, Trade<T>>::listeners_) {
         listener->ProcessAdd(trade);
     }

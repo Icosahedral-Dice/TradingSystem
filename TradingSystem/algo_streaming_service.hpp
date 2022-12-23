@@ -35,7 +35,7 @@ AlgoStream<T>::AlgoStream(const T& product, const PriceStreamOrder& bid_order, c
 
 template<typename T>
 AlgoStream<T>::~AlgoStream() {
-    delete price_stream_;
+    // delete price_stream_;
 }
 
 template<typename T>

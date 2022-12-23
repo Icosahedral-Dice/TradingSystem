@@ -10,6 +10,7 @@
 #include <string>
 #include "soa.hpp"
 #include <unordered_map>
+#include <vector>
 
 /**
  * A price object consisting of mid and bid/offer spread.
@@ -24,6 +25,9 @@ public:
     Price() = default;
     // ctor for a price
     Price(const T &_product, double _mid, double _bidOfferSpread);
+    Price(const Price<T>& price);
+    
+    Price<T>& operator = (const Price<T>& price);
 
     // Get the product
     const T& GetProduct() const;
@@ -33,9 +37,11 @@ public:
 
     // Get the bid/offer spread around the mid
     double GetBidOfferSpread() const;
+    
+    vector<string> ToString() const;
 
 private:
-    const T& product;
+    T product;
     double mid;
     double bidOfferSpread;
 
@@ -99,6 +105,20 @@ Price<T>::Price(const T &_product, double _mid, double _bidOfferSpread) :
 {
   mid = _mid;
   bidOfferSpread = _bidOfferSpread;
+}
+
+template <typename T>
+Price<T>::Price(const Price<T>& price) :
+product(price.product), mid(price.mid), bidOfferSpread(price.bidOfferSpread) {}
+
+template <typename T>
+Price<T>& Price<T>::operator = (const Price<T>& price) {
+    if (&price != this) {
+        product = price.product;
+        mid = price.mid;
+        bidOfferSpread = price.bidOfferSpread;
+    }
+    return *this;
 }
 
 template <typename T>
@@ -193,5 +213,18 @@ void PricingConnector<T>::Subscribe(ifstream& data)
     }
 }
 
+template<typename T>
+vector<string> Price<T>::ToString() const
+{
+    string _product = product.GetProductId();
+    string _mid = ConvertPrice(mid);
+    string _bidOfferSpread = ConvertPrice(bidOfferSpread);
+
+    vector<string> _strings;
+    _strings.push_back(_product);
+    _strings.push_back(_mid);
+    _strings.push_back(_bidOfferSpread);
+    return _strings;
+}
 
 #endif

@@ -12,6 +12,7 @@
 #include <vector>
 #include <unordered_map>
 #include "utilities.hpp"
+#include <string>
 
 /**
  * PV01 risk.
@@ -35,6 +36,10 @@ public:
 
     // Get the quantity that this risk value is associated with
     long GetQuantity() const;
+    
+    void SetQuantity(long _quantity);
+    
+    vector<string> ToString() const;
 
 private:
     T product;
@@ -141,6 +146,26 @@ template <typename T>
 PV01<T>::PV01(const T &_product, double _pv01, long _quantity) :
   product(_product), pv01(_pv01), quantity(_quantity) {}
 
+template<typename T>
+const T& PV01<T>::GetProduct() const {
+    return product;
+}
+
+template<typename T>
+double PV01<T>::GetPV01() const {
+    return pv01;
+}
+
+template<typename T>
+long PV01<T>::GetQuantity() const {
+    return quantity;
+}
+
+template<typename T>
+void PV01<T>::SetQuantity(long _quantity) {
+    quantity = _quantity;
+}
+
 template <typename T>
 BucketedSector<T>::BucketedSector(const vector<T>& _products, string _name) :
   products(_products), name(_name) {}
@@ -211,7 +236,7 @@ void RiskService<T>::AddPosition(Position<T>& position) {
     // Convert to PV01 obj
     double pv01_value = GetPV01Value(product_id);
     PV01<T> pv01(product, pv01_value, quantity);
-    pv01s_[product_id] = pv01;
+    pv01s_.insert_or_assign(product_id, pv01);
 
     // Notify listeners
     for (auto& listener : Service<string, PV01<T>>::listeners_)
@@ -253,5 +278,19 @@ void PositionToRiskListener<T>::ProcessRemove(Position<T>& data) {}
 
 template<typename T>
 void PositionToRiskListener<T>::ProcessUpdate(Position<T>& data) {}
+
+template<typename T>
+vector<string> PV01<T>::ToString() const
+{
+    string _product = product.GetProductId();
+    string _pv01 = to_string(pv01);
+    string _quantity = to_string(quantity);
+
+    vector<string> _strings;
+    _strings.push_back(_product);
+    _strings.push_back(_pv01);
+    _strings.push_back(_quantity);
+    return _strings;
+}
 
 #endif

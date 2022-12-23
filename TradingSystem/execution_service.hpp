@@ -54,7 +54,7 @@ public:
     AlgoExecutionToExecutionListener<T>* GetInListener();
     
     // Execute an order on a market
-    void ExecuteOrder(const ExecutionOrder<T>& order, Market market);
+    void ExecuteOrder(ExecutionOrder<T> order, Market market = CME);
 
 };
 
@@ -101,7 +101,7 @@ void ExecutionService<T>::OnMessage(ExecutionOrder<T>& data) {
     execution_orders_.insert_or_assign(product_id, data);
     
     // Also notify listeners
-    for (auto& listener : Service<string, OrderBook<T>>::listeners_) {
+    for (auto& listener : this->listeners_) {
         listener->ProcessAdd(data);
     }
 }
@@ -122,7 +122,7 @@ AlgoExecutionToExecutionListener<T>* ExecutionService<T>::GetInListener() {
 }
 
 template<typename T>
-void ExecutionService<T>::ExecuteOrder(const ExecutionOrder<T>& order, Market market)
+void ExecutionService<T>::ExecuteOrder(ExecutionOrder<T> order, Market market)
 {
     string _productId = order.GetProduct().GetProductId();
     execution_orders_[_productId] = order;

@@ -94,6 +94,16 @@ map<string, pair<int, date>> kBondMapCusip({
     {"912810TL2", {30, {2052, Nov, 15}}}
 });
 
+map<string, double> kPV01Map({
+    {"91282CFX4", 0.019851},
+    {"91282CFW6", 0.029309},
+    {"91282CFZ9", 0.048643},
+    {"91282CFY2", 0.065843},
+    {"91282CFV8", 0.087939},
+    {"912810TM0", 0.012346},
+    {"912810TL2", 0.018469}
+});
+
 // Fetch cusip object from maturity (years)
 // 2Y, 3Y, 5Y, 7Y, 10Y, 20Y, and 30Y
 // Issue date: 2022/11/30
@@ -134,8 +144,15 @@ string GetTimestamp() {
 }
 
 double GetPV01Value(const string& cusip) {
-    // TODO: Implement this
-    return 0.;
+    return kPV01Map[cusip];
+}
+
+long GetMillisecond() {
+    auto time_point = chrono::system_clock::now();
+    auto sec = chrono::time_point_cast<chrono::seconds>(time_point);
+    auto millisec = chrono::duration_cast<chrono::milliseconds>(time_point - sec);
+    long millisec_count = millisec.count();
+    return millisec_count;
 }
 
 #endif /* utilities_hpp */

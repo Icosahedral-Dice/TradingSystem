@@ -50,7 +50,7 @@ public:
     ServiceListener<AlgoStream<T>>* GetInListener();
 
     // Publish two-way prices
-    void PublishPrice(const PriceStream<T>& priceStream);
+    void PublishPrice(PriceStream<T>& priceStream);
 
 };
 
@@ -94,7 +94,7 @@ template <typename T>
 void StreamingService<T>::OnMessage(PriceStream<T>& data) {
     string product_id = data.GetProduct().GetProductId();
     
-    price_streams_[product_id] = data;
+    price_streams_.insert_or_assign(product_id, data);
     
 //    // Also notify listeners
 //    for (auto& listener : Service<string, Price<T>>::listeners_) {
@@ -118,9 +118,9 @@ ServiceListener<AlgoStream<T>>* StreamingService<T>::GetInListener() {
 }
 
 template <typename T>
-void StreamingService<T>::PublishPrice(const PriceStream<T> &price_stream) {
+void StreamingService<T>::PublishPrice(PriceStream<T> &price_stream) {
     for (auto& listener : this->GetListeners()) {
-        listener.ProcessAdd(price_stream);
+        listener->ProcessAdd(price_stream);
     }
 }
 

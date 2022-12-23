@@ -55,13 +55,15 @@ public:
     // MARK: SERVICE CLASS OVERRIDE ABOVE
     
     // Get the connector of the service
-    HistoricalDataConnector<T>* GetOutConnector();
+    HistoricalDataConnector<T>* GetConnector();
 
     // Get the listener of the service
     ServiceListener<T>* GetInListener();
     
     // Persist data to a store
-    void PersistData(string persistKey, const T& data);
+    void PersistData(string persistKey, T data);
+    
+    ServiceType GetServiceType() const;
 };
 
 template<typename T>
@@ -155,12 +157,18 @@ ServiceListener<T>* HistoricalDataService<T>::GetInListener() {
 }
 
 template <typename T>
-HistoricalDataConnector<T>* HistoricalDataService<T>::GetOutConnector() {
+HistoricalDataConnector<T>* HistoricalDataService<T>::GetConnector() {
     return out_connector_;
 }
 
 template<typename T>
-void HistoricalDataService<T>::PersistData(string persistKey, const T& data) {
+ServiceType HistoricalDataService<T>::GetServiceType() const
+{
+    return type_;
+}
+
+template<typename T>
+void HistoricalDataService<T>::PersistData(string persistKey, T data) {
     out_connector_->Publish(data);
 }
 
@@ -192,7 +200,7 @@ void HistoricalDataConnector<T>::Publish(T& data)
     }
 
     file << GetTimestamp() << ",";
-    vector<string> strings = data.ToStrings();
+    vector<string> strings = data.ToString();
     for (auto& s : strings)
     {
         file << s << ",";

@@ -40,7 +40,7 @@ class MarketDataToAlgoExecutionListener;
 template <typename T>
 class AlgoExecutionService : public Service<string, AlgoExecutionOrder<T>> {
 private:
-    unordered_map<string, AlgoExecutionService<T>> algo_execution_orders_;
+    unordered_map<string, AlgoExecutionOrder<T>> algo_execution_orders_;
     MarketDataToAlgoExecutionListener<T>* in_listener_;
     double spread_;
     long execution_count_;
@@ -76,7 +76,7 @@ private:
     AlgoExecutionService<T>* service_;
     
 public:
-    MarketDataToAlgoExecutionListener(OrderBook<T>* service);
+    MarketDataToAlgoExecutionListener(AlgoExecutionService<T>* service);
     ~MarketDataToAlgoExecutionListener() = default;
     
     // MARK: SERVICELISTENER CLASS OVERRIDE BELOW
@@ -126,12 +126,12 @@ AlgoExecutionService<T>::~AlgoExecutionService() {
 
 template <typename T>
 AlgoExecutionOrder<T>& AlgoExecutionService<T>::GetData(string product_id) {
-    return algo_execution_orders_.at(product_id);
+    return algo_execution_orders_[product_id];
 }
 
 template <typename T>
 void AlgoExecutionService<T>::OnMessage(AlgoExecutionOrder<T>& data) {
-    string product_id = data.GetProduct().GetProductId();
+    string product_id = data.GetExecutionOrder()->GetProduct().GetProductId();
     
     algo_execution_orders_.insert_or_assign(product_id, data);
     
@@ -198,7 +198,7 @@ void AlgoExecutionService<T>::AlgoExecute(OrderBook<T>& order_book, Market marke
 }
 
 template<typename T>
-MarketDataToAlgoExecutionListener<T>::MarketDataToAlgoExecutionListener(OrderBook<T>* service) : service_(service) {}
+MarketDataToAlgoExecutionListener<T>::MarketDataToAlgoExecutionListener(AlgoExecutionService<T>* service) : service_(service) {}
 
 template<typename T>
 void MarketDataToAlgoExecutionListener<T>::ProcessAdd(OrderBook<T>& data)
